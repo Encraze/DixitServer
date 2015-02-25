@@ -107,14 +107,14 @@ public enum Action {
                 }
                 if (game.votes.size() == game.players.size() - 1) {
                     game.state = Action.CALC;
-                    return process(game);
+                    return calc(game);
                 }
             }
             return new Response(game);
         }
     },
 
-    CALC {},
+    CALC,
 
     REFRESH {
         @Override
@@ -133,7 +133,7 @@ public enum Action {
         return null;
     }
 
-    Response process(Game game) {
+    Response calc(Game game) {
         if (game.state == Action.CALC) {
             Map<Integer, Integer> levelScore = game.levelScore;
             for (Map.Entry<Integer, Integer> ls : levelScore.entrySet()) {
