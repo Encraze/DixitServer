@@ -13,7 +13,7 @@ public class Game {
     static final int MAX_CARDS_IN_HAND = 6;
     Player activePlayer;
     Card activeCard;
-    Action state;
+    GameAction state;
     Map<Integer, Player> players;
     Map<Integer, Integer> addedCards = new HashMap<Integer, Integer>();
     List<Card> deck;
@@ -23,11 +23,11 @@ public class Game {
     PreviousResult prevRes;
     int votesPerTurn;
 
-    public Game(Map<Integer, Player> players, List<Card> deck, int votesPerTurn, long id) {
+    Game(Map<Integer, Player> players, List<Card> deck, int votesPerTurn, long id) {
         this.id = id;
         this.players = players;
         this.deck = deck;
-        state = Action.TURN;
+        state = GameAction.TURN;
         this.votesPerTurn = votesPerTurn;
         init();
     }

@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,58 +8,47 @@ public class Bot {
     static Map<Integer, Player> players;
     static List<Card> cards;
 
-    static {
-        cards = new ArrayList<Card>();
-        for (int i = 0; i < 100; i++) {
-            cards.add(new Card(i));
-        }
-    }
-
-    public Bot() {
-        players = new HashMap<Integer, Player>();
-    }
-
     public void play() throws Exception {
         long gameId = -1;
         if (players.size() > 3) {
-            gameId = GameManager.newGame(players, cards);
+            gameId = GameManager.begin(players, cards);
         }
         Game game = GameManager.getGame(gameId);
         if (game != null) {
-            while (game.state != Action.END) {
+            while (game.state != GameAction.END) {
                 Thread.sleep(200);
                 for (Player player : players.values()) {
-                    Response resp = RequestHandler.process(new Request(gameId, player.getId(), null, null, Action.REFRESH));
-                    Action action = Action.REFRESH;
+                    GameResponse resp = RequestHandler.processGame(new GameRequest(gameId, player.getId(), null, null, GameAction.REFRESH));
+                    GameAction action = GameAction.REFRESH;
                     String comment = null;
-                    int[] cards = null;
+                    Integer[] cards = null;
                     switch (resp.gameState) {
                         case TURN:
                             if (player.isTurn()) {
                                 System.out.println("Player " + player.getId() + " makes a turn");
                                 Card card = player.getCards().get(Util.RND.nextInt(player.getCards().size()));
-                                cards = new int[]{card.getId()};
+                                cards = new Integer[]{card.getId()};
                                 comment = "{" + card.getId() + "}";
-                                action = Action.TURN;
+                                action = GameAction.TURN;
                             }
                             break;
                         case ADD:
                             if (!player.isTurn()) {
                                 Card card = player.getCards().get(Util.RND.nextInt(player.getCards().size()));
-                                cards = new int[] {card.getId()};
-                                action = Action.ADD;
+                                cards = new Integer[] {card.getId()};
+                                action = GameAction.ADD;
                             }
                             break;
                         case VOTE:
                             if (!player.isTurn()) {
                                 int choice = pickVote(game, player);
-                                cards = new int[] {choice};
-                                action = Action.VOTE;
+                                cards = new Integer[] {choice};
+                                action = GameAction.VOTE;
                             }
                             break;
                         default: //NOP
                     }
-                    RequestHandler.process(new Request(gameId, player.getId(), cards, comment, action));
+                    RequestHandler.processGame(new GameRequest(gameId, player.getId(), cards, comment, action));
                 }
             }
         }

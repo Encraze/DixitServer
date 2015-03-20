@@ -6,10 +6,10 @@ import java.util.Map;
 /**
  * @author Igor Royd
  */
-public enum Action {
+public enum GameAction {
     TURN {
         @Override
-        public Response process(Request request) {
+        public GameResponse process(GameRequest request) {
             Game game = GameManager.getGame(request.getGameId());
             if (verifyRequest(request)) {
                 Player player = game.players.get(request.getPlayerId());
@@ -22,11 +22,11 @@ public enum Action {
                 }
                 if (card == null) {
                     System.err.println("You're trying to provide a card you don't own.");
-                    return new Response(game);
+                    return new GameResponse(game);
                 }
                 if (player.isTurn()) {
                     game.activeCard = card;
-                    game.state = Action.ADD;
+                    game.state = GameAction.ADD;
                     player.getCards().remove(card);
                     System.out.println("Player " + player.getId() + " draws card " + card.getId() + ". Comment: " + request.getComment());
                 } else {
@@ -35,13 +35,13 @@ public enum Action {
             } else {
                 System.err.println("Incorrect request on " + request.getAction() + ". Current action awaited: " + game.state);
             }
-            return new Response(game);
+            return new GameResponse(game);
         }
     },
     
     ADD {
         @Override
-        public Response process(Request request) {
+        public GameResponse process(GameRequest request) {
             Game game = GameManager.getGame(request.getGameId());
             if (verifyRequest(request)) {
                 Player player = game.players.get(request.getPlayerId());
@@ -56,7 +56,7 @@ public enum Action {
                     }
                     if (card == null) {
                         System.err.println("Player is trying to cheat. Putting a card that's not in hand");
-                        return new Response(game);
+                        return new GameResponse(game);
                     }
                     addedCards.put(card.getId(), player.getId());
                     player.setAddedCard(card.getId());
@@ -71,18 +71,18 @@ public enum Action {
                     tabledCards.add(game.activeCard.getId());
                     Collections.shuffle(tabledCards);
                     game.tabledCards = tabledCards;
-                    game.state = Action.VOTE;
+                    game.state = GameAction.VOTE;
                 }
             } else {
                 System.err.println("It's time to add cards to the heap. No other action permitted.");
             }
-            return new Response(game);
+            return new GameResponse(game);
         }
     },
     
     VOTE {
         @Override
-        public Response process(Request request) {
+        public GameResponse process(GameRequest request) {
             Game game = GameManager.getGame(request.getGameId());
             if (verifyRequest(request)) {
                 Player player = game.players.get(request.getPlayerId());
@@ -106,11 +106,11 @@ public enum Action {
                     System.err.println("The player making a turn cannot vote during the round.");
                 }
                 if (game.votes.size() == game.players.size() - 1) {
-                    game.state = Action.CALC;
+                    game.state = GameAction.CALC;
                     return calc(game);
                 }
             }
-            return new Response(game);
+            return new GameResponse(game);
         }
     },
 
@@ -118,10 +118,10 @@ public enum Action {
 
     REFRESH {
         @Override
-        public Response process(Request request) {
+        public GameResponse process(GameRequest request) {
             Game game = GameManager.getGame(request.getGameId());
             if (game.players.containsKey(request.getPlayerId())) {
-                return new Response(game);
+                return new GameResponse(game);
             }
             return null;
         }
@@ -129,12 +129,12 @@ public enum Action {
 
     END;
 
-    public Response process(Request request) {
+    public GameResponse process(GameRequest request) {
         return null;
     }
 
-    Response calc(Game game) {
-        if (game.state == Action.CALC) {
+    GameResponse calc(Game game) {
+        if (game.state == GameAction.CALC) {
             Map<Integer, Integer> levelScore = game.levelScore;
             for (Map.Entry<Integer, Integer> ls : levelScore.entrySet()) {
                 ls.setValue(0);
@@ -181,20 +181,20 @@ public enum Action {
             for (Map.Entry<Integer, Integer> sc : score.entrySet()) {
                 if (sc.getValue() >= 30) {
                     System.out.println("Player: " + sc.getKey() + " Wins!");
-                    game.state = Action.END;
-                    return new Response(game);
+                    game.state = GameAction.END;
+                    return new GameResponse(game);
                 }
             }
             game.nextTurn();
-            game.state = Action.TURN;
-            return new Response(game);
+            game.state = GameAction.TURN;
+            return new GameResponse(game);
         } else {
             System.err.println("Inconsistent state");
             return null;
         }
     }
 
-    boolean verifyRequest(Request request) {
+    boolean verifyRequest(GameRequest request) {
         Game game = GameManager.getGame(request.getGameId());
         if (game.players.containsKey(request.getPlayerId()) && game.state == request.getAction()) {
             return true;

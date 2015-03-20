@@ -2,7 +2,11 @@
  * @author Igor Royd
  */
 public class RequestHandler {
-    public static Response process(Request request) {
+    public static GameResponse processGame(GameRequest request) {
         return request.getAction().process(request);
     }
+    
+    public static RoomResponse processRoom(RoomRequest request) {
+        return request.getAction().process(request);
+    } 
 }

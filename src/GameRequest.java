@@ -1,14 +1,14 @@
 /**
  * @author Igor Royd
  */
-public class Request {
-    long gameId;
-    int playerId;
-    int[] cards;
-    String comment;
-    Action action;
+public class GameRequest {
+    private Long gameId;
+    private Integer playerId;
+    private Integer[] cards;
+    private String comment;
+    private GameAction action;
     
-    public Request(long gameId, int playerId, int[] cards, String comment, Action action) {
+    public GameRequest(long gameId, int playerId, Integer[] cards, String comment, GameAction action) {
         this.gameId = gameId;
         this.playerId = playerId;
         this.cards = cards;
@@ -32,11 +32,11 @@ public class Request {
         this.playerId = playerId;
     }
 
-    public int[] getCards() {
+    public Integer[] getCards() {
         return cards;
     }
 
-    public void setCards(int[] cards) {
+    public void setCards(Integer[] cards) {
         this.cards = cards;
     }
 
@@ -48,11 +48,11 @@ public class Request {
         this.comment = comment;
     }
 
-    public Action getAction() {
+    public GameAction getAction() {
         return action;
     }
 
-    public void setAction(Action action) {
+    public void setAction(GameAction action) {
         this.action = action;
     }
 }
