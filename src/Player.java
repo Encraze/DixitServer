@@ -5,7 +5,7 @@ import java.util.List;
  * @author Igor Royd
  */
 public class Player {
-    private int id;
+    protected int id;
     private List<Card> cards;
     private int addedCard;
     private boolean turn;

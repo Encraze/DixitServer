@@ -2,26 +2,26 @@
  * @author Igor Royd
  */
 public class GameRequest {
-    private Long gameId;
+    private Long roomId;
     private Integer playerId;
     private Integer[] cards;
     private String comment;
     private GameAction action;
     
-    public GameRequest(long gameId, int playerId, Integer[] cards, String comment, GameAction action) {
-        this.gameId = gameId;
+    public GameRequest(long roomId, int playerId, Integer[] cards, String comment, GameAction action) {
+        this.roomId = roomId;
         this.playerId = playerId;
         this.cards = cards;
         this.comment = comment;
         this.action = action;
     }
 
-    public long getGameId() {
-        return gameId;
+    public long getRoomId() {
+        return roomId;
     }
 
-    public void setGameId(long gameId) {
-        this.gameId = gameId;
+    public void setRoomId(long roomId) {
+        this.roomId = roomId;
     }
 
     public int getPlayerId() {

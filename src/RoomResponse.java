@@ -1,21 +1,40 @@
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Igor Royd
  */
 public class RoomResponse {
-    private Integer roomId;
+    private Long roomId;
     private String status;
-    private Integer joinedPlayers;
+    private Integer playersInTheRoom;
     private Integer playersToWait;
-    private List<Integer> openRooms;
+    private Set<Long> openRooms;
 
-    public RoomResponse(Integer roomId, String status, Integer joinedPlayers, Integer playersToWait, List<Integer> openRooms) {
-        this.roomId = roomId;
-        this.status = status;
-        this.joinedPlayers = joinedPlayers;
-        this.playersToWait = playersToWait;
-        this.openRooms = openRooms;
+    public RoomResponse(Room room) {
+        roomId = room.getId();
+        playersInTheRoom = room.getPlayers().size();
+        playersToWait = room.getCapacity() - playersInTheRoom;
+        status = room.getStatus();
+        openRooms = GameManager.getOpenRoomIds();
     }
 
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Integer getPlayersInTheRoom() {
+        return playersInTheRoom;
+    }
+
+    public Integer getPlayersToWait() {
+        return playersToWait;
+    }
+
+    public Set<Long> getOpenRooms() {
+        return openRooms;
+    }
 }

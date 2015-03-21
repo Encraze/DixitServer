@@ -10,7 +10,7 @@ public enum GameAction {
     TURN {
         @Override
         public GameResponse process(GameRequest request) {
-            Game game = GameManager.getGame(request.getGameId());
+            Game game = GameManager.getRoom(request.getRoomId()).getGame();
             if (verifyRequest(request)) {
                 Player player = game.players.get(request.getPlayerId());
                 Card card = null;
@@ -42,7 +42,7 @@ public enum GameAction {
     ADD {
         @Override
         public GameResponse process(GameRequest request) {
-            Game game = GameManager.getGame(request.getGameId());
+            Game game = GameManager.getRoom(request.getRoomId()).getGame();
             if (verifyRequest(request)) {
                 Player player = game.players.get(request.getPlayerId());
                 Map<Integer, Integer> addedCards = game.addedCards;
@@ -83,7 +83,7 @@ public enum GameAction {
     VOTE {
         @Override
         public GameResponse process(GameRequest request) {
-            Game game = GameManager.getGame(request.getGameId());
+            Game game = GameManager.getRoom(request.getRoomId()).getGame();
             if (verifyRequest(request)) {
                 Player player = game.players.get(request.getPlayerId());
                 if (!player.isTurn()) {
@@ -119,7 +119,7 @@ public enum GameAction {
     REFRESH {
         @Override
         public GameResponse process(GameRequest request) {
-            Game game = GameManager.getGame(request.getGameId());
+            Game game = GameManager.getRoom(request.getRoomId()).getGame();
             if (game.players.containsKey(request.getPlayerId())) {
                 return new GameResponse(game);
             }
@@ -195,7 +195,7 @@ public enum GameAction {
     }
 
     boolean verifyRequest(GameRequest request) {
-        Game game = GameManager.getGame(request.getGameId());
+        Game game = GameManager.getRoom(request.getRoomId()).getGame();
         if (game.players.containsKey(request.getPlayerId()) && game.state == request.getAction()) {
             return true;
         } else {
