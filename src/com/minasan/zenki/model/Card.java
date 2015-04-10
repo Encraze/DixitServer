@@ -1,6 +1,5 @@
-/**
- * @author Igor Royd
- */
+package com.minasan.zenki.model;
+
 public class Card {
 
     private int id;

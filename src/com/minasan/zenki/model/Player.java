@@ -1,9 +1,8 @@
+package com.minasan.zenki.model;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Igor Royd
- */
 public class Player {
     protected int id;
     private List<Card> cards;
@@ -12,7 +11,7 @@ public class Player {
     
     public Player(int id) {
         this.id = id;
-        cards = new ArrayList<Card>();
+        cards = new ArrayList<>();
     }
 
     public boolean isTurn() {

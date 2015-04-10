@@ -1,24 +1,31 @@
+package com.minasan.zenki.model.game;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Igor Royd
- */
+import com.minasan.zenki.model.Card;
+import com.minasan.zenki.model.Player;
+import com.minasan.zenki.model.PreviousResult;
+import com.minasan.zenki.model.Util;
+
 public class Game {
+    static final int MAX_CARDS_IN_HAND = 6;
+    
     private long id;
     private int turner;
-    Map<Integer, List<Integer>> votes = new HashMap<Integer, List<Integer>>();
-    static final int MAX_CARDS_IN_HAND = 6;
+    Map<Integer, List<Integer>> votes = new HashMap<>();
     Player activePlayer;
     Card activeCard;
     GameAction state;
     Map<Integer, Player> players;
-    Map<Integer, Integer> addedCards = new HashMap<Integer, Integer>();
+    List<Integer> playerIds;
+    Map<Integer, Integer> addedCards = new HashMap<>();
     List<Card> deck;
-    Map<Integer, Integer> score = new HashMap<Integer, Integer>();
-    Map<Integer, Integer> levelScore = new HashMap<Integer, Integer>();
+    Map<Integer, Integer> score = new HashMap<>();
+    Map<Integer, Integer> levelScore = new HashMap<>();
     List<Integer> tabledCards;
     PreviousResult prevRes;
     int votesPerTurn;
@@ -39,7 +46,11 @@ public class Game {
             levelScore.put(player.getId(), 0);
         }
         turner = Util.RND.nextInt(players.size());
-        activePlayer = players.get(turner);
+        playerIds = new ArrayList<>(players.size());
+        for (Player player : players.values()) {
+            playerIds.add(player.getId());
+        }
+        activePlayer = players.get(playerIds.get(turner));
         activePlayer.setTurn(true);
         for (Player player : players.values()) {
             for (int i = 0; i < MAX_CARDS_IN_HAND; i++) {
@@ -59,13 +70,13 @@ public class Game {
         prevRes = new PreviousResult(this);
         addedCards.clear();
         votes.clear();
-        players.get(turner).setTurn(false);
+        players.get(playerIds.get(turner)).setTurn(false);
         if (turner == players.size() - 1) {
             turner = 0;
         } else {
             turner++;
         }
-        activePlayer = players.get(turner);
+        activePlayer = players.get(playerIds.get(turner));
         activePlayer.setTurn(true);
         for (Player player : players.values()) {
             int pick;
@@ -80,5 +91,57 @@ public class Game {
 
     public long getId() {
         return id;
+    }
+
+    public int getTurner() {
+        return turner;
+    }
+
+    public Map<Integer, List<Integer>> getVotes() {
+        return votes;
+    }
+
+    public Player getActivePlayer() {
+        return activePlayer;
+    }
+
+    public Card getActiveCard() {
+        return activeCard;
+    }
+
+    public GameAction getState() {
+        return state;
+    }
+
+    public Map<Integer, Player> getPlayers() {
+        return players;
+    }
+
+    public Map<Integer, Integer> getAddedCards() {
+        return addedCards;
+    }
+
+    public List<Card> getDeck() {
+        return deck;
+    }
+
+    public Map<Integer, Integer> getScore() {
+        return score;
+    }
+
+    public Map<Integer, Integer> getLevelScore() {
+        return levelScore;
+    }
+
+    public List<Integer> getTabledCards() {
+        return tabledCards;
+    }
+
+    public PreviousResult getPrevRes() {
+        return prevRes;
+    }
+
+    public int getVotesPerTurn() {
+        return votesPerTurn;
     }
 }

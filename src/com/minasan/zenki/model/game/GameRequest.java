@@ -1,6 +1,5 @@
-/**
- * @author Igor Royd
- */
+package com.minasan.zenki.model.game;
+
 public class GameRequest {
     private Long roomId;
     private Integer playerId;

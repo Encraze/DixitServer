@@ -1,8 +1,9 @@
+package com.minasan.zenki.model.room;
+
 import java.util.Set;
 
-/**
- * @author Igor Royd
- */
+import com.minasan.zenki.model.game.GameManager;
+
 public class RoomResponse {
     private Long roomId;
     private String status;

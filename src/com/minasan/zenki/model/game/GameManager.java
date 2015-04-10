@@ -1,12 +1,15 @@
+package com.minasan.zenki.model.game;
+
 import java.util.*;
 
-/**
- * @author Igor Royd
- */
+import com.minasan.zenki.model.Card;
+import com.minasan.zenki.model.Player;
+import com.minasan.zenki.model.room.Room;
+
 public class GameManager {
     private static final List<Card> defaultDeck = initDefaultDeck();
 
-    private static Map<Long, Room> roomHolder = new HashMap<Long, Room>();
+    private static Map<Long, Room> roomHolder = new HashMap<>();
 
     public static long createRoom(int starterId, int capacity) {
         Room room = new Room(capacity, starterId);
@@ -27,7 +30,7 @@ public class GameManager {
         Room room = roomHolder.get(roomId);
         
         int votes = 1;
-        Map<Integer, Player> players = new HashMap<Integer, Player>();
+        Map<Integer, Player> players = new HashMap<>();
         for (Player player : room.getPlayers()) {
             players.put(player.getId(), player);
         }
@@ -42,7 +45,7 @@ public class GameManager {
     }
 
     private static List<Card> initDefaultDeck() {
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             cards.add(new Card(i));
         }

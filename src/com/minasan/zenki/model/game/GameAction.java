@@ -1,11 +1,13 @@
+package com.minasan.zenki.model.game;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Igor Royd
- */
+import com.minasan.zenki.model.Card;
+import com.minasan.zenki.model.Player;
+
 public enum GameAction {
     TURN {
         @Override

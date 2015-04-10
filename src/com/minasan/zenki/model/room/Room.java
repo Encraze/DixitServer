@@ -1,9 +1,12 @@
+package com.minasan.zenki.model.room;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Igor Royd
- */
+import com.minasan.zenki.model.Player;
+import com.minasan.zenki.model.Util;
+import com.minasan.zenki.model.game.Game;
+
 public class Room {
     private long id;
     private int capacity;

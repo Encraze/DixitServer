@@ -1,8 +1,12 @@
+package com.minasan.zenki.model.room;
+
 import java.util.List;
 
-/**
- * @author Igor Royd
- */
+import com.minasan.zenki.model.BotPlayer;
+import com.minasan.zenki.model.Player;
+import com.minasan.zenki.model.Util;
+import com.minasan.zenki.model.game.GameManager;
+
 public enum RoomAction {
     CREATE {
         @Override
@@ -15,9 +19,12 @@ public enum RoomAction {
         @Override
         public RoomResponse process(RoomRequest request) {
             Room room = GameManager.getRoom(request.getRoomId());
-            if (room.getPlayers().get(0).getId() == request.getPlayerId()) {
+            if (room.getPlayers().get(0).getId() == request.getPlayerId() && request.getRequestValue() >= room.getPlayers().size()) {
                 room.setCapacity(request.getRequestValue());
+            } else {
+                room.setStatus("ERROR: Change capacity unavailable.");
             }
+            conditionalStartGame(room, room.getPlayers());
             return new RoomResponse(room);
         }
     },
@@ -29,9 +36,7 @@ public enum RoomAction {
             if (players.get(0).getId() == request.getPlayerId() && players.size() < room.getCapacity()) {
                 room.getPlayers().add(new BotPlayer(Util.RND.nextInt()));
             }
-            if (players.size() == room.getCapacity()) {
-                GameManager.begin(room.getId());
-            }
+            conditionalStartGame(room, players);
             return new RoomResponse(room);
         }
     },
@@ -43,9 +48,7 @@ public enum RoomAction {
             if (players.size() < room.getCapacity()) {
                 players.add(new Player(request.getPlayerId()));
             }
-            if (players.size() == room.getCapacity()) {
-                GameManager.begin(room.getId());
-            }
+            conditionalStartGame(room, players);
             return new RoomResponse(room);
         }
     },
@@ -55,6 +58,12 @@ public enum RoomAction {
             return new RoomResponse(GameManager.getRoom(request.getRoomId()));
         }
     };
+
+    private static void conditionalStartGame(Room room, List<Player> players) {
+        if (players.size() == room.getCapacity()) {
+            GameManager.begin(room.getId());
+        }
+    }
 
     public RoomResponse process(RoomRequest request) {
         return null;

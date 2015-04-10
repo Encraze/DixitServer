@@ -1,8 +1,7 @@
+package com.minasan.zenki.model;
+
 import java.util.Random;
 
-/**
- * @author Igor Royd
- */
 public class Util {
     public static final Random RND = new Random();
     private static long counter;

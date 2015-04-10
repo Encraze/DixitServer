@@ -1,6 +1,5 @@
-/**
- * Created by Encraze on 21.03.2015.
- */
+package com.minasan.zenki.model;
+
 public class BotPlayer extends Player {
 
     public BotPlayer(int id) {
