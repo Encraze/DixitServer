@@ -14,12 +14,14 @@ import com.minasan.zenki.model.room.RoomRequest;
 import com.minasan.zenki.model.room.RoomResponse;
 
 public class Bot {
-    public static void play(Long roomId) throws Exception {
+    public static void play(Long roomId) {
         Room room = GameManager.getRoom(roomId);
         Game game = room.getGame();
         Map<Integer, Player> players = game.getPlayers();
         if (game.getState() != GameAction.END) {
-            Thread.sleep(200);
+            try {
+                Thread.sleep(200);
+            } catch (Exception e) { /*NOP*/ }
             for (Player player : players.values()) {
                 if (player.getId() < 0) {
                     GameResponse gameResp = RequestHandler.processGame(new GameRequest(roomId, player.getId(), null, null, GameAction.REFRESH));
@@ -29,7 +31,7 @@ public class Bot {
                     switch (gameResp.getGameState()) {
                         case TURN:
                             if (player.isTurn()) {
-                                System.out.println("Player " + player.getId() + " makes a turn");
+                                System.out.print("Player " + player.getId() + " makes a turn");
                                 Card card = player.getCards().get(Util.RND.nextInt(player.getCards().size()));
                                 cards = new Integer[]{card.getId()};
                                 comment = "{" + card.getId() + "}";

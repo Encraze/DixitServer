@@ -19,7 +19,7 @@ public class Game {
     Map<Integer, List<Integer>> votes = new HashMap<>();
     Player activePlayer;
     Card activeCard;
-    GameAction state;
+    private GameAction state;
     Map<Integer, Player> players;
     List<Integer> playerIds;
     Map<Integer, Integer> addedCards = new HashMap<>();
@@ -111,6 +111,11 @@ public class Game {
 
     public GameAction getState() {
         return state;
+    }
+
+    public void setState(GameAction state) {
+        System.out.println();
+        this.state = state;
     }
 
     public Map<Integer, Player> getPlayers() {

@@ -20,7 +20,7 @@ public class GameResponse {
     public GameResponse(Game game) {
         activePlayer = game.activePlayer.getId();
         gameId = game.getId();
-        gameState = game.state;
+        gameState = game.getState();
         votedPlayerIds = game.votes.keySet();
         playerIds = game.players.keySet();
         score = game.score;
