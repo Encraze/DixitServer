@@ -8,4 +8,9 @@ public class BotPlayer extends Player {
             this.id *= -1;
         }
     }
+    
+    @Override
+    public boolean isBot() {
+        return true;
+    }
 }

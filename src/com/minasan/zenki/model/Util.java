@@ -7,6 +7,6 @@ public class Util {
     private static long counter;
     
     public static long nextId() {
-        return counter++;
+        return ++counter;
     }
 }

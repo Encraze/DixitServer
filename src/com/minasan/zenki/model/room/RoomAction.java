@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.minasan.zenki.model.BotPlayer;
 import com.minasan.zenki.model.Player;
-import com.minasan.zenki.model.Util;
 import com.minasan.zenki.model.game.GameManager;
 
 public enum RoomAction {
@@ -34,7 +33,7 @@ public enum RoomAction {
             Room room = GameManager.getRoom(request.getRoomId());
             List<Player> players = room.getPlayers();
             if (players.get(0).getId() == request.getPlayerId() && players.size() < room.getCapacity()) {
-                room.getPlayers().add(new BotPlayer(Util.RND.nextInt()));
+                room.getPlayers().add(new BotPlayer(room.getPlayers().size() + 1));
             }
             conditionalStartGame(room, players);
             return new RoomResponse(room);

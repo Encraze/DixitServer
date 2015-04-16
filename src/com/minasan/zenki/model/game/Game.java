@@ -12,7 +12,7 @@ import com.minasan.zenki.model.PreviousResult;
 import com.minasan.zenki.model.Util;
 
 public class Game {
-    static final int MAX_CARDS_IN_HAND = 6;
+    static final int MAX_CARDS_IN_HAND = 3;
     
     private long id;
     private int turner;
@@ -79,14 +79,17 @@ public class Game {
         activePlayer = players.get(playerIds.get(turner));
         activePlayer.setTurn(true);
         for (Player player : players.values()) {
+            player.reset();
             int pick;
             if (deck.size() > 0) {
                 pick = Util.RND.nextInt(deck.size());
                 Card card = deck.get(pick);
+                System.out.print("{" + player.getId() + "} picks [" + card.getId() + "] || ");
                 player.getCards().add(card);
                 deck.remove(pick);
             }
         }
+        System.out.println();
     }
 
     public long getId() {
@@ -114,7 +117,7 @@ public class Game {
     }
 
     public void setState(GameAction state) {
-        System.out.println();
+        System.out.print("\n" + state.name() + ": ");
         this.state = state;
     }
 

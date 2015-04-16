@@ -28,9 +28,9 @@ public enum GameAction {
                 }
                 if (player.isTurn()) {
                     game.activeCard = card;
-                    game.setState(GameAction.ADD);
+                    System.out.print("\nP: " + player.getId() + " draws [" + card.getId() + "]. Comment: " + request.getComment());
                     player.getCards().remove(card);
-                    System.out.println("P: " + player.getId() + " draws " + card.getId() + ". Comment: " + request.getComment());
+                    game.setState(GameAction.ADD);
                 } else {
                     System.err.println("It's not player's turn");
                 }
@@ -63,7 +63,7 @@ public enum GameAction {
                     addedCards.put(card.getId(), player.getId());
                     player.setAddedCard(card.getId());
                     player.getCards().remove(card);
-                    System.out.print("P: " + player.getId() + " adds: " + card.getId() + "|| ");
+                    System.out.print("{" + player.getId() + "} -> [" + card.getId() + "] || ");
                 } else {
                     System.err.println("Player has made a turn and it's not the time to add cards. Let others play");
                 }
@@ -99,7 +99,7 @@ public enum GameAction {
                         if (card < game.tabledCards.size()) {
                             int votedCard = game.tabledCards.get(card); 
                             votes.get(playerId).add(votedCard);
-                            System.out.print("P: " + request.getPlayerId() + " vote: " + votedCard + " || ");
+                            System.out.print("{" + request.getPlayerId() + "} -> [" + votedCard + "] || ");
                         } else {
                             System.err.println("Player " + request.getPlayerId() + " trying to vote for illegal card " + card);
                         }
@@ -179,7 +179,7 @@ public enum GameAction {
             for (Map.Entry<Integer, Integer> e : levelScore.entrySet()) {
                 score.put(e.getKey(), score.get(e.getKey()) + levelScore.get(e.getKey()));
             }
-            System.out.println("Score: " + score);
+            System.out.println(" " + score);
             for (Map.Entry<Integer, Integer> sc : score.entrySet()) {
                 if (sc.getValue() >= 30) {
                     System.out.println("Player: " + sc.getKey() + " Wins!");

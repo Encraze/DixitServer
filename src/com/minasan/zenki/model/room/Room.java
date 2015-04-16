@@ -3,6 +3,7 @@ package com.minasan.zenki.model.room;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.minasan.zenki.model.BotPlayer;
 import com.minasan.zenki.model.Player;
 import com.minasan.zenki.model.Util;
 import com.minasan.zenki.model.game.Game;
@@ -17,8 +18,12 @@ public class Room {
     public Room(int capacity, int starterId) {
         id = Util.nextId();
         this.capacity = capacity;
-        players = new ArrayList<Player>(capacity);
-        players.add(new Player(starterId));
+        players = new ArrayList<>(capacity);
+        if (starterId < 0) {
+            players.add(new BotPlayer(starterId));
+        } else {
+            players.add(new Player(starterId));
+        }
         status = "Waiting for players.";
     }
 

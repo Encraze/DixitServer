@@ -32,6 +32,7 @@ public class GameManager {
         int votes = 1;
         Map<Integer, Player> players = new HashMap<>();
         for (Player player : room.getPlayers()) {
+            player.reset();
             players.put(player.getId(), player);
         }
         if (players.size() > 7) {

@@ -8,6 +8,8 @@ public class Player {
     private List<Card> cards;
     private int addedCard;
     private boolean turn;
+    private boolean added = false;
+    private boolean voted = false;
     
     public Player(int id) {
         this.id = id;
@@ -36,5 +38,22 @@ public class Player {
 
     public void setAddedCard(int addedCard) {
         this.addedCard = addedCard;
+    }
+    
+    public boolean isBot() {
+        return false;
+    }
+    
+    public boolean isAdded() {
+        return added;
+    }
+    
+    public boolean isVoted() {
+        return voted;
+    }
+    
+    public void reset() {
+        added = false;
+        voted = false;
     }
 }
