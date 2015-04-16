@@ -12,7 +12,7 @@ import com.minasan.zenki.model.PreviousResult;
 import com.minasan.zenki.model.Util;
 
 public class Game {
-    static final int MAX_CARDS_IN_HAND = 3;
+    static final int MAX_CARDS_IN_HAND = 6;
     
     private long id;
     private int turner;
